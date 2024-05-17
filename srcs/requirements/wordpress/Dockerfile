@@ -16,8 +16,12 @@ RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR
 
 RUN		chown -R root:root /var/www/wordpress
 
+EXPOSE 9000
 
-CMD ["nginx", "-g", "daemon off;"]
+# CMD ["/usr/sbin/php-fpm7.3", "-F"]
+
+
+# CMD ["nginx", "-g", "daemon off;"]
 # FROM debian:bullseye
 
 # RUN apt-get update && apt-get install -y \

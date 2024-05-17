@@ -10,10 +10,15 @@ RUN apt-get install mariadb-server -y
 
 COPY conf/50-server.cnf	/etc/mysql/mariadb.conf.d/50-server.cnf
 
-# # COPY tools/script.sh	/tmp/mdb_script.sh
 
-# # RUN sh /tmp/mdb_script.sh
+COPY tools/script.sh	/tmp/mdb_script.sh
+RUN chmod +x /tmp/mdb_script.sh
+ENTRYPOINT ["/tmp/mdb_script.sh"]
 
+
+# RUN sh /tmp/mdb_script.sh
+
+CMD ["mysqld"]
 
 
 
