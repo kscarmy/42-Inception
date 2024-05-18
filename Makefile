@@ -1,6 +1,10 @@
-VOLUMES	=	/home/douglas/data
+USER_HOME = /home/guderram
 
 all:
+	sudo mkdir -p $(USER_HOME)/data/mariadb
+	sudo mkdir -p $(USER_HOME)/data/wordpress
+	chmod 777 $(USER_HOME)/data/wordpress
+	chmod 777 $(USER_HOME)/data/mariadb
 	docker-compose -f srcs/docker-compose.yml up -d --build
 
 stop:
@@ -9,17 +13,10 @@ stop:
 clean:
 	docker-compose -f srcs/docker-compose.yml down -v
 	docker rmi $$(docker images -q)
+	rm -rf $(USER_HOME)/data
 
 fclean: clean
 	docker system prune -af
-
-wipe: fclean
-	sudo rm -rf $(VOLUMES)/wordpress
-	sudo rm -rf $(VOLUMES)/mariadb
-	mkdir $(VOLUMES)/wordpress
-	chmod 777 $(VOLUMES)/wordpress
-	mkdir $(VOLUMES)/mariadb
-	chmod 777 $(VOLUMES)/mariadb
 
 rere: fclean all
 

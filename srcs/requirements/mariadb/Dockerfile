@@ -9,17 +9,17 @@ RUN apt-get install -y mariadb-server
 
 #Mariadb setup
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-# COPY conf/sql_setup.sh /sql_setup.sh
-# RUN chmod +x sql_setup.sh
+COPY conf/sql_setup.sh /sql_setup.sh
+RUN chmod +x sql_setup.sh
 
 EXPOSE 3306
 
 
-COPY conf/script.sh	/tmp/mdb_script.sh
-RUN chmod +x /tmp/mdb_script.sh
-RUN sh /tmp/mdb_script.sh
+# COPY conf/script.sh	/tmp/mdb_script.sh
+# RUN chmod +x /tmp/mdb_script.sh
+# RUN sh /tmp/mdb_script.sh
 
 
-# ENTRYPOINT ["bash", "sql_setup.sh"]
+ENTRYPOINT ["bash", "sql_setup.sh"]
 
-CMD ["mysqld"]
+# CMD ["mysqld"]
