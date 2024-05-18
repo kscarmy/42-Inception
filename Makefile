@@ -1,21 +1,26 @@
-.PHONY: all build up down clean fclean re
+VOLUMES	=	/home/douglas/data
 
-all: build
+all:
+	docker-compose -f srcs/docker-compose.yml up -d --build
 
-build:
-	docker-compose -f srcs/docker-compose.yml up --build -d
-
-up:
-	docker-compose -f srcs/docker-compose.yml up -d
-
-down:
-	docker-compose -f srcs/docker-compose.yml down
+stop:
+	docker-compose -f srcs/docker-compose.yml stop
 
 clean:
-	docker-compose -f srcs/docker-compose.yml down --remove-orphans
-
-fclean: clean
-	docker-compose -f srcs/docker-compose.yml rm -f
+	docker-compose -f srcs/docker-compose.yml down -v
 	docker rmi $$(docker images -q)
 
-re: fclean all
+fclean: clean
+	docker system prune -af
+
+wipe: fclean
+	sudo rm -rf $(VOLUMES)/wordpress
+	sudo rm -rf $(VOLUMES)/mariadb
+	mkdir $(VOLUMES)/wordpress
+	chmod 777 $(VOLUMES)/wordpress
+	mkdir $(VOLUMES)/mariadb
+	chmod 777 $(VOLUMES)/mariadb
+
+rere: fclean all
+
+re: clean all
