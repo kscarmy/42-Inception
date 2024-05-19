@@ -6,10 +6,12 @@ RUN apt update -y && apt upgrade -y
 
 #Dependencies
 RUN apt-get install -y wget \
-php7.3 \
+ssmtp \
+php \
 php-fpm \
 php-mysql \
 mariadb-client
+
 
 #Getting wordpress v6.0 & unzipping
 RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
