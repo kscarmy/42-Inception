@@ -39,6 +39,11 @@ services:
             - wordpress:/var/www/wordpress
         networks:
             - inception
+        environment:
+          WORDPRESS_DB_HOST: mariadb:3306
+          WORDPRESS_DB_USER: ${SQL_USER}
+          WORDPRESS_DB_PASSWORD: ${SQL_PASSWORD}
+          WORDPRESS_DB_NAME: ${SQL_DATABASE}
         depends_on:
             - mariadb
         build:
