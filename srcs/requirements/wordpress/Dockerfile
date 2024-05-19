@@ -1,5 +1,5 @@
 #Image used from Dockerhub
-FROM debian:buster
+FROM debian:bullseye
 
 #Updating sources
 RUN apt update -y && apt upgrade -y

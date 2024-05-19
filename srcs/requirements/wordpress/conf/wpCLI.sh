@@ -1,7 +1,5 @@
 #!bin/sh
-#sleep to wait for mariadb container to run
-# sleep 10
-
+sleep 5;
 if [ ! -e /var/www/wordpress/wp-config.php ]; then
     cd /var/www/wordpress
     wp config create --allow-root --dbname=$SQL_DATABASE --dbuser=$SQL_USER --dbpass=$SQL_PASSWORD --dbhost=mariadb:3306 --path='/var/www/wordpress'
@@ -18,3 +16,5 @@ if [ ! -d /run/php ]; then
 fi
 
 /usr/sbin/php-fpm7.3 -F
+
+service php7.2-fpm restart
