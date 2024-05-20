@@ -5,7 +5,6 @@ FROM debian:bullseye
 RUN apt update -y && apt upgrade -y
 
 #Dependencies
-# RUN apt-get install -y mariadb-server-10.5
 RUN apt-get install -y mariadb-server
 RUN apt install -y systemd
 
@@ -17,11 +16,4 @@ RUN chmod +x sql_setup.sh
 EXPOSE 3306
 
 
-# COPY conf/script.sh	/tmp/mdb_script.sh
-# RUN chmod +x /tmp/mdb_script.sh
-# RUN sh /tmp/mdb_script.sh
-
-
 ENTRYPOINT ["bash", "sql_setup.sh"]
-
-# CMD ["mysqld"]

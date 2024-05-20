@@ -1,5 +1,5 @@
 #!/bin/bash
-sleep 5;
+sleep 7;
 set -e
 
 # Afficher les variables pour debug
