@@ -19,8 +19,8 @@ RUN mkdir -p /run/php && \
     chown -R www-data:www-data /run/php
 
 # Télécharger et extraire WordPress
-RUN wget https://wordpress.org/latest.tar.gz -P /var/www/
-RUN cd /var/www && tar -xzf latest.tar.gz && rm latest.tar.gz
+RUN wget https://wordpress.org/wordpress-6.5.3.tar.gz -P /var/www/
+RUN cd /var/www && tar -xzf wordpress-6.5.3.tar.gz && rm wordpress-6.5.3.tar.gz
 RUN chown -R www-data:www-data /var/www/wordpress
 
 # RUN mkdir -p /var/run/php-fpm/
