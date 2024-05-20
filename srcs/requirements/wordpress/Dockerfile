@@ -1,31 +1,40 @@
-#Image used from Dockerhub
 FROM debian:bullseye
 
-#Updating sources
-RUN apt update -y && apt upgrade -y
+# Installer les dépendances nécessaires
+RUN apt-get update && \
+    apt-get install -y \
+    php7.4 \
+    php7.4-fpm \
+    php7.4-mysql \
+    curl \
+    wget \
+    unzip \
+    less \
+    mariadb-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-#Dependencies
-RUN apt-get install -y wget \
-ssmtp \
-php \
-php-fpm \
-php-mysql \
-mariadb-client
+# Créer le répertoire pour le fichier PID de PHP-FPM et ajuster les permissions
+RUN mkdir -p /run/php && \
+    chown -R www-data:www-data /run/php
 
-
-#Getting wordpress v6.0 & unzipping
-RUN wget https://wordpress.org/latest.tar.gz -P /var/www
+# Télécharger et extraire WordPress
+RUN wget https://wordpress.org/latest.tar.gz -P /var/www/
 RUN cd /var/www && tar -xzf latest.tar.gz && rm latest.tar.gz
+RUN chown -R www-data:www-data /var/www/wordpress
 
-#PHP config setup
-COPY ./conf/php.conf /etc/php/7.3/fpm/pool.d/www.conf
+# RUN mkdir -p /var/run/php-fpm/
 
-RUN	chown -R root:root /var/www/wordpress
+# Configurer PHP-FPM pour écouter sur le port 9000
+RUN sed -i 's/listen = .*/listen = 9000/' /etc/php/7.4/fpm/pool.d/www.conf
 
-#Setting up WordPressCLI
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
-COPY conf/wpCLI.sh /wpCLI.sh
+# Copier le fichier de configuration de PHP-FPM
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
-ENTRYPOINT ["bash", "wpCLI.sh"]
+# Exposer le port 9000 pour la communication avec Nginx
+EXPOSE 9000
+
+# Démarrer PHP-FPM en mode foreground
+CMD ["php-fpm7.4", "--nodaemonize"]
+
+# CMD ["service", "php-fpm7.4", "start"]
