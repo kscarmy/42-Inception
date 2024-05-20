@@ -31,10 +31,15 @@ RUN sed -i 's/listen = .*/listen = 9000/' /etc/php/7.4/fpm/pool.d/www.conf
 # Copier le fichier de configuration de PHP-FPM
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
+# Copier le script d'entrée
+COPY conf/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Exposer le port 9000 pour la communication avec Nginx
 EXPOSE 9000
 
 # Démarrer PHP-FPM en mode foreground
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm7.4", "--nodaemonize"]
 
 # CMD ["service", "php-fpm7.4", "start"]
